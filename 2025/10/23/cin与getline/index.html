@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://avatars.githubusercontent.com/u/195444915?v=4">
+  <link rel="icon" href="https://avatars.githubusercontent.com/u/195444915?v=4">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="forest-sweet">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="cin&gt;&gt;行为 基于”单词”的读取 以空白字符作为分隔（空格、制表符、换行符等） 跳过前导的空白字符 读取非空白字符，直到遇到下一个空白字符停止 不读取空白分隔符，将其留在输入缓冲区中  最基本，也是最常用的用法，输入一个数字：12345678910#include &lt;iostream&gt;using namespace std;main ()&#123;int a,b;cin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++中cin、cin.get()、cin.getline()、getline()等函数的用法">
+<meta property="og:url" content="https://forest-sweet.github.io/2025/10/23/cin%E4%B8%8Egetline/">
+<meta property="og:site_name" content="forest-sweet hexo blog">
+<meta property="og:description" content="cin&gt;&gt;行为 基于”单词”的读取 以空白字符作为分隔（空格、制表符、换行符等） 跳过前导的空白字符 读取非空白字符，直到遇到下一个空白字符停止 不读取空白分隔符，将其留在输入缓冲区中  最基本，也是最常用的用法，输入一个数字：12345678910#include &lt;iostream&gt;using namespace std;main ()&#123;int a,b;cin">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-23T14:25:13.000Z">
+<meta property="article:modified_time" content="2025-10-27T12:48:52.567Z">
+<meta property="article:author" content="forest-sweet">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++中cin、cin.get()、cin.getline()、getline()等函数的用法 - forest-sweet hexo blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"forest-sweet.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"apple_touch_icon":"/img/fluid.png left | right","placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>forest-sweet hexo blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++中cin、cin.get()、cin.getline()、getline()等函数的用法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-23 22:25" pubdate>
+          2025年10月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++中cin、cin.get()、cin.getline()、getline()等函数的用法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="cin"><a href="#cin" class="headerlink" title="cin&gt;&gt;"></a>cin&gt;&gt;</h1><h2 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h2><ul>
+<li>基于”单词”的读取</li>
+<li>以空白字符作为分隔（空格、制表符、换行符等）</li>
+<li>跳过前导的空白字符</li>
+<li>读取非空白字符，直到遇到下一个空白字符停止</li>
+<li>不读取空白分隔符，将其留在输入缓冲区中</li>
+</ul>
+<h2 id="最基本，也是最常用的用法，输入一个数字："><a href="#最基本，也是最常用的用法，输入一个数字：" class="headerlink" title="最基本，也是最常用的用法，输入一个数字："></a>最基本，也是最常用的用法，输入一个数字：</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-id">#include</span> &lt;iostream&gt;<br>using namespace std;<br><span class="hljs-selector-tag">main</span> ()<br>&#123;<br>int <span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">b</span>;<br>cin&gt;&gt;<span class="hljs-selector-tag">a</span>&gt;&gt;<span class="hljs-selector-tag">b</span>;<br>cout&lt;&lt;<span class="hljs-selector-tag">a</span>+<span class="hljs-selector-tag">b</span>&lt;&lt;endl;<br>&#125;<br>//输入：<span class="hljs-number">2</span><span class="hljs-selector-attr">[回车]</span><span class="hljs-number">3</span><span class="hljs-selector-attr">[回车]</span><br>//输出：<span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>‘&gt;&gt;’ 是会过滤掉不可见字符（如 空格 回车，TAB 等）</li>
+<li>cin&gt;&gt;noskipws&gt;&gt;input[j];&#x2F;&#x2F;不想略过空白字符，那就使用 noskipws 流控制</li>
+</ul>
+<h2 id="接受一个字符串，遇“空格”、“TAB”、“回车”都结束"><a href="#接受一个字符串，遇“空格”、“TAB”、“回车”都结束" class="headerlink" title="接受一个字符串，遇“空格”、“TAB”、“回车”都结束"></a>接受一个字符串，遇“空格”、“TAB”、“回车”都结束</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-built_in">main</span> ()<br>&#123;<br><span class="hljs-type">char</span> a[<span class="hljs-number">20</span>];<br>cin&gt;&gt;a;<br>cout&lt;&lt;a&lt;&lt;endl;<br>&#125;<br><span class="hljs-comment">//输入：jkljkljkl</span><br><span class="hljs-comment">//输出：jkljkljkl</span><br><span class="hljs-comment">//输入：jkljkl jkljkl       //遇空格结束</span><br><span class="hljs-comment">//输出：jkljkl</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="cin-get"><a href="#cin-get" class="headerlink" title="cin.get()"></a>cin.get()</h1><h2 id="cin-get-字符变量名-可以用来接收字符"><a href="#cin-get-字符变量名-可以用来接收字符" class="headerlink" title="cin.get(字符变量名)可以用来接收字符"></a>cin.get(字符变量名)可以用来接收字符</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-built_in">main</span> ()<br>&#123;<br><span class="hljs-type">char</span> ch;<br>ch=cin.<span class="hljs-built_in">get</span>();               <span class="hljs-comment">//或者cin.get(ch);</span><br>cout&lt;&lt;ch&lt;&lt;endl;<br>&#125;<br>输入：jljkljkl<br>输出：j<br></code></pre></td></tr></table></figure>
+
+<h2 id="cin-get-字符数组名-接收字符数目-用来接收一行字符串-可以接收空格"><a href="#cin-get-字符数组名-接收字符数目-用来接收一行字符串-可以接收空格" class="headerlink" title="cin.get(字符数组名,接收字符数目)用来接收一行字符串,可以接收空格"></a>cin.get(字符数组名,接收字符数目)用来接收一行字符串,可以接收空格</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment">#include &lt;iostream&gt;</span><br>using namespace std;<br>main ()<br>&#123;<br>char a[<span class="hljs-number">20</span>];<br>cin.get(a,<span class="hljs-number">20</span>);<br>cout&lt;&lt;a&lt;&lt;endl;<br>&#125;<br>输入：<span class="hljs-keyword">jkl </span><span class="hljs-keyword">jkl </span><span class="hljs-keyword">jkl</span><br><span class="hljs-keyword"></span>输出：<span class="hljs-keyword">jkl </span><span class="hljs-keyword">jkl </span><span class="hljs-keyword">jkl</span><br><span class="hljs-keyword"></span>输入：abcdeabcdeabcdeabcdeabcde （输入<span class="hljs-number">25</span>个字符）<br>输出：abcdeabcdeabcdeabcd              （接收<span class="hljs-number">19</span>个字符+<span class="hljs-number">1</span>个<span class="hljs-string">&#x27;\0&#x27;</span>）<br>```  <br><br><span class="hljs-comment"># cin.getline()</span><br><br><span class="hljs-comment">## 接受一个字符串，可以接收空格并输出</span><br></code></pre></td></tr></table></figure>
+<p>#include <iostream><br>using namespace std;<br>main ()<br>{<br>char m[20];<br>cin.getline(m,5);<br>cout&lt;&lt;m&lt;&lt;endl;<br>}<br>输入：jkljkljkl<br>输出：jklj<br>接受5个字符到m中，其中最后一个为’\0’，所以只看到4个字符输出<br>如果把5改成20：<br>输入：jkljkljkl<br>输出：jkljkljkl<br>输入：jklf fjlsjf fjsdklf<br>输出：jklf fjlsjf fjsdklf</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">*</span> cin.getline()实际上有三个参数,当第三个参数省略时，系统默认为&#x27;\0&#x27;  <br>如果将例子中cin.getline()改为cin.getline(m,5,&#x27;a&#x27;);当输入jlkjkljkl时输出jklj，输入jkaljkljkl时，输出jk<br><span class="hljs-bullet">*</span> 当用在多维数组中的时候，也可以用cin.getline(m[i],20)之类的用法<br><br><span class="hljs-section"># getline()</span><br><br><span class="hljs-section">## 行为</span><br><span class="hljs-bullet">*</span> 基于&quot;行&quot;的读取<br><span class="hljs-bullet">*</span> 以换行符 \n 作为分隔（可自定义其他分隔符）<br><span class="hljs-bullet">*</span> 读取所有字符，包括空格<br><span class="hljs-bullet">*</span> 遇到换行符时停止<br><span class="hljs-bullet">*</span> 读取并丢弃换行符，不留在缓冲区中<br><br><span class="hljs-section">## 接受一个字符串，可以接收空格并输出</span><br></code></pre></td></tr></table></figure>
+<p>#include<string><br>using namespace std;<br>main ()<br>{<br>string str;<br>getline(cin,str);<br>cout&lt;&lt;str&lt;&lt;endl;<br>}<br>输入：jkljkljkl<br>输出：jkljkljkl<br>输入：jkl jfksldfj jklsjfl<br>输出：jkl jfksldfj jklsjfl</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><br><span class="hljs-comment"># cin.ignore()</span><br><br>通常用于清除输入缓冲区中残留的无用字符（如换行符 <span class="hljs-string">\n），避免对后续输入操作产生干扰。</span>  <br><br><span class="hljs-comment">## 清除换行符</span><br>当使用 cin &gt;&gt; 读取数据后，输入缓冲区可能残留换行符 <span class="hljs-string">\n，若后续使用</span> getline(cin, str) 读取整行，会直接读取到空行（因为 getline 遇到 <span class="hljs-string">\n</span> 会停止）。  <br></code></pre></td></tr></table></figure>
+<p>#include <iostream><br>#include <string><br>using namespace std;</p>
+<p>int main() {<br>    int num;<br>    cout &lt;&lt; “输入一个数字：”;<br>    cin &gt;&gt; num;  &#x2F;&#x2F; 输入数字后按回车，缓冲区残留 ‘\n’</p>
+<pre><code class="hljs">// 忽略缓冲区中残留的 &#39;\n&#39;（默认忽略1个字符）
+cin.ignore();
+
+string str;
+cout &lt;&lt; &quot;输入一行字符串：&quot;;
+getline(cin, str);  // 此时可正常读取整行
+
+cout &lt;&lt; &quot;数字：&quot; &lt;&lt; num &lt;&lt; endl;
+cout &lt;&lt; &quot;字符串：&quot; &lt;&lt; str &lt;&lt; endl;
+return 0;
+</code></pre>
+<p>}</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>## 忽略指定数量的字符<br></code></pre></td></tr></table></figure>
+<p>cin.ignore(3);  &#x2F;&#x2F; 忽略接下来的3个字符 </p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><br><span class="hljs-meta"># 混合使用 cin &gt;&gt; 和 getline 的陷阱</span><br></code></pre></td></tr></table></figure>
+<p>int num;<br>string str;</p>
+<p>cout &lt;&lt; “Enter a number: “;<br>cin &gt;&gt; num; &#x2F;&#x2F; 用户输入数字后按回车</p>
+<p>cout &lt;&lt; “Enter a string: “;<br>getline(cin, str); &#x2F;&#x2F; 这行代码会直接跳过！</p>
+<p>cout &lt;&lt; “Number: “ &lt;&lt; num &lt;&lt; endl;<br>cout &lt;&lt; “String: “ &lt;&lt; str &lt;&lt; “(为什么是空的？)” &lt;&lt; endl;</p>
+<pre><code class="hljs">**原因：** cin &gt;&gt; num 只读取了数字，而用户按下的回车键（‘\n&#39;） 留在了输入缓冲区中。紧接着的 getline(cin, str) 一遇到这个换行符就认为读取结束，所以看起来它被“跳过”了。  
+**解决方案：** 在 cin &gt;&gt; 之后，使用 cin.ignore() 来清空缓冲区中的换行符。
+</code></pre>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C++</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++中cin、cin.get()、cin.getline()、getline()等函数的用法</div>
+      <div>https://forest-sweet.github.io/2025/10/23/cin与getline/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>forest-sweet</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/02/KMP%E7%AE%97%E6%B3%95/" title="KMP算法">
+                        <span class="hidden-mobile">KMP算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
